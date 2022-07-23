@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Allspice.Models;
 using Allspice.Repositories;
@@ -14,26 +15,58 @@ namespace Allspice.Services
       _rs = rs;
       _repo = repo;
     }
-
     internal Ingredient Create(Ingredient ingredientData, string userId)
     {
-      // NOTE this is where the 1 to many comes into play
-      _rs.GetRecId(ingredientData.RecipeId, userId);
-      return _repo.Create(ingredientData);
+      Recipe found = _rs.GetById(ingredientData.RecipeId);
+      if (found.CreatorId != userId)
+      {
+        throw new Exception("Invalid Id");
+      }
+      _repo.Create(ingredientData);
+      return (ingredientData);
+
     }
 
-    internal List<Ingredient> GetByRecipeId(int recipeId, string userId)
+    internal Ingredient GetById(int id)
     {
-      // NOTE here too
-      _rs.GetRecId(recipeId, userId);
+      Ingredient found = _repo.GetById(id);
+      if (found == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return found;
+    }
+
+    internal List<Ingredient> GetByRecipeId(int recipeId)
+    {
+      _rs.GetById(recipeId);
       return _repo.GetByRecipeId(recipeId);
     }
 
-    // internal Ingredient Delete(int id)
-    // {
-    //   Ingredient original = GetById(id);
-    //   _repo.Delete(id);
-    //   return original;
-    // }
+    internal Ingredient Edit(Ingredient ingredientData, string userId)
+    {
+      Ingredient original = this.GetById(ingredientData.Id);
+      Recipe found = _rs.GetById(original.RecipeId);
+      if (found.CreatorId != userId)
+      {
+        throw new Exception("This is not yours to alter.");
+      }
+      original.Name = ingredientData.Name ?? original.Name;
+      original.Quantity = ingredientData.Quantity ?? original.Quantity;
+      _repo.Edit(original);
+      return original;
+    }
+
+    internal Ingredient Delete(int id, string userId)
+    {
+      Ingredient original = this.GetById(id);
+      Recipe found = _rs.GetById(original.RecipeId);
+      if (found.CreatorId != userId)
+      {
+        throw new Exception("This is not your to alter.");
+      }
+      _repo.Delete(original);
+      return original;
+    }
   }
 }

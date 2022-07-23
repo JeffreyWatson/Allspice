@@ -57,12 +57,11 @@ namespace Allspice.Controllers
 
     //get by id for ingredient
     [HttpGet("{id}/ingredients")]
-    public async Task<ActionResult<List<Ingredient>>> GetIngredients(int id)
+    public ActionResult<List<Ingredient>> GetIngredients(int id)
     {
       try
       {
-        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        List<Ingredient> ingredients = _ins.GetByRecipeId(id, userInfo.Id);
+        List<Ingredient> ingredients = _ins.GetByRecipeId(id);
         return Ok(ingredients);
       }
       catch (Exception e)

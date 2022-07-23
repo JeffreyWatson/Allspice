@@ -28,24 +28,23 @@ namespace Allspice.Services
       return found;
     }
 
-    // NOTE this is the extra get that was made to accommodate the 1 to many. This is the get recipe id for obtaining ingredients
-    internal Recipe GetRecId(int recipeId, string userId)
-    {
-      // find
-      Recipe found = _repo.GetById(recipeId);
-      // validate not null
-      if (found == null)
-      {
-        throw new Exception("Invalid Id");
-      }
-      // validate is yours
-      if (found.CreatorId != userId)
-      {
-        throw new Exception("Forbidden");
-      }
-      // return
-      return found;
-    }
+    // internal Recipe GetRecId(int recipeId, string userId)
+    // {
+    //   // find
+    //   Recipe found = _repo.GetById(recipeId);
+    //   // validate not null
+    //   if (found == null)
+    //   {
+    //     throw new Exception("Invalid Id");
+    //   }
+    //   // validate is yours
+    //   if (found.CreatorId != userId)
+    //   {
+    //     throw new Exception("Forbidden");
+    //   }
+    //   // return
+    //   return found;
+    // }
 
     internal Recipe Create(Recipe recipeData)
     {
@@ -55,6 +54,10 @@ namespace Allspice.Services
     internal Recipe Edit(Recipe recipeData)
     {
       Recipe original = GetById(recipeData.Id);
+      if (recipeData.CreatorId != original.CreatorId)
+      {
+        throw new Exception("This is not yours");
+      }
       original.Picture = recipeData.Picture ?? original.Picture;
       original.Title = recipeData.Title ?? original.Title;
       original.Subtitle = recipeData.Subtitle ?? original.Subtitle;

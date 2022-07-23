@@ -10,7 +10,7 @@ namespace Allspice.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  [Authorize]
+
   public class IngredientsController : ControllerBase
   {
     private readonly IngredientsService _ins;
@@ -20,11 +20,22 @@ namespace Allspice.Controllers
       _ins = ins;
     }
 
-    // get by recipe id
+    [HttpGet("{id}")]
+    public ActionResult<Ingredient> Get(int id)
+    {
+      try
+      {
+        Ingredient ingredient = _ins.GetById(id);
+        return Ok(ingredient);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
-    // create
     [HttpPost]
-
+    [Authorize]
     public async Task<ActionResult<Ingredient>> Create([FromBody] Ingredient ingredientData)
     {
       try
@@ -39,22 +50,39 @@ namespace Allspice.Controllers
       }
     }
 
-    // delete
-    // [HttpDelete("{id}")]
-    // [Authorize]
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Ingredient>> EditAsync(int id, [FromBody] Ingredient ingredientData)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        ingredientData.Id = id;
+        Ingredient update = _ins.Edit(ingredientData, userInfo.Id);
+        //remember to return so you do not get an error above on EditAsync. 
+        return Ok(update);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
-    // public async Task<ActionResult<Ingredient>> DeleteAsync(int id)
-    // {
-    //   try
-    //   {
-    //     Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-    //     Ingredient deletedIngredient = _ins.Delete(id, userInfo.Id);
-    //     return Ok(deletedIngredient);
-    //   }
-    //   catch (Exception e)
-    //   {
-    //     return BadRequest(e.Message);
-    //   }
-    // }
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Ingredient>> DeleteAsync(int id)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        Ingredient deletedIngredient = _ins.Delete(id, userInfo.Id);
+        return Ok(deletedIngredient);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
   }
 }
