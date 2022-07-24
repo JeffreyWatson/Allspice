@@ -16,9 +16,9 @@ namespace Allspice.Controllers
   {
     private readonly RecipesService _rs;
     private readonly IngredientsService _ins;
-    private readonly StepService _ss;
+    private readonly StepsService _ss;
 
-    public RecipesController(RecipesService rs, IngredientsService ins, StepService ss)
+    public RecipesController(RecipesService rs, IngredientsService ins, StepsService ss)
     {
       _rs = rs;
       _ins = ins;

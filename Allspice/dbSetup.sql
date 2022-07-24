@@ -40,10 +40,10 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS steps (
-        id VARCHAR(255) NOT NULL primary key COMMENT 'primary key',
+        id INT NOT NULL AUTO_INCREMENT primary key COMMENT 'primary key',
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
-        posititon INT NOT NULL,
+        position INT NOT NULL,
         body VARCHAR(255) NOT NULL,
         recipeId INT NOT NULL,
         FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE

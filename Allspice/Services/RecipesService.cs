@@ -28,24 +28,6 @@ namespace Allspice.Services
       return found;
     }
 
-    // internal Recipe GetRecId(int recipeId, string userId)
-    // {
-    //   // find
-    //   Recipe found = _repo.GetById(recipeId);
-    //   // validate not null
-    //   if (found == null)
-    //   {
-    //     throw new Exception("Invalid Id");
-    //   }
-    //   // validate is yours
-    //   if (found.CreatorId != userId)
-    //   {
-    //     throw new Exception("Forbidden");
-    //   }
-    //   // return
-    //   return found;
-    // }
-
     internal Recipe Create(Recipe recipeData)
     {
       return _repo.Create(recipeData);
