@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Allspice.Models;
 using Dapper;
 
@@ -53,6 +55,16 @@ namespace Allspice.Repositories
     {
       string sql = "DELETE FROM steps WHERE id = @id LIMIT 1";
       _db.Execute(sql, original);
+    }
+
+    internal List<Step> GetByRecipeId(int id)
+    {
+      string sql = @"
+  SELECT *
+  FROM steps
+  WHERE recipeID = @id
+  ";
+      return _db.Query<Step>(sql, new { id }).ToList();
     }
   }
 }

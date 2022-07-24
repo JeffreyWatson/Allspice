@@ -17,12 +17,14 @@ namespace Allspice.Controllers
     private readonly RecipesService _rs;
     private readonly IngredientsService _ins;
     private readonly StepsService _ss;
+    private readonly FavoritesService _fs;
 
-    public RecipesController(RecipesService rs, IngredientsService ins, StepsService ss)
+    public RecipesController(RecipesService rs, IngredientsService ins, StepsService ss, FavoritesService fs)
     {
       _rs = rs;
       _ins = ins;
       _ss = ss;
+      _fs = fs;
     }
 
     // get all
@@ -63,6 +65,20 @@ namespace Allspice.Controllers
       {
         List<Ingredient> ingredients = _ins.GetByRecipeId(id);
         return Ok(ingredients);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}/steps")]
+    public ActionResult<List<Step>> GetSteps(int id)
+    {
+      try
+      {
+        List<Step> steps = _ss.GetByRecipeId(id);
+        return Ok(steps);
       }
       catch (Exception e)
       {

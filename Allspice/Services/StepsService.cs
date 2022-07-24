@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Allspice.Models;
 using Allspice.Repositories;
 
@@ -60,6 +61,12 @@ namespace Allspice.Services
       }
       _repo.Delete(original);
       return original;
+    }
+
+    internal List<Step> GetByRecipeId(int stepId)
+    {
+      List<Step> steps = _repo.GetByRecipeId(stepId);
+      return steps;
     }
   }
 }
