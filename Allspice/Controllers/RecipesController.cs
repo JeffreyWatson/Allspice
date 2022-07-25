@@ -86,6 +86,41 @@ namespace Allspice.Controllers
       }
     }
 
+    [HttpGet("favorites")]
+    [Authorize]
+    public async Task<ActionResult<List<Recipe>>> GetFavoriteRecipeAsync()
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        List<Recipe> recipes = _rs.GetFavoriteRecipes(userInfo.Id);
+        return Ok(recipes);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpPost("{id}/favorites")]
+    [Authorize]
+    public async Task<ActionResult<Favorite>> Create(int id)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        Favorite favoriteData = new Favorite();
+        favoriteData.AccountId = userInfo.Id;
+        favoriteData.RecipeId = id;
+        Favorite newFavorite = _fs.Create(favoriteData);
+        return Ok(newFavorite);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
     // create
     [HttpPost]
     [Authorize]

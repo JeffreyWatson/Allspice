@@ -17,14 +17,12 @@ namespace Allspice.Repositories
 
     internal Ingredient GetById(int id)
     {
-      {
-        string sql = @"
+      string sql = @"
       SELECT *
       FROM ingredients
       WHERE id = @id
       ";
-        return _db.QueryFirstOrDefault<Ingredient>(sql, new { id });
-      }
+      return _db.QueryFirstOrDefault<Ingredient>(sql, new { id });
     }
 
     internal List<Ingredient> GetByRecipeId(int recipeId)

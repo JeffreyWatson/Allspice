@@ -10,7 +10,7 @@ namespace Allspice.Controllers
 {
 
   [ApiController]
-  [Route("api/[Controller]")]
+  [Route("api/[controller]")]
   public class StepsController : ControllerBase
   {
     private readonly StepsService _ss;
@@ -38,8 +38,7 @@ namespace Allspice.Controllers
     }
 
     [HttpGet("{id}")]
-
-    public ActionResult<Step> GetById(int id)
+    public ActionResult<Step> Get(int id)
     {
       try
       {
@@ -52,7 +51,7 @@ namespace Allspice.Controllers
       }
     }
 
-    [HttpPut("{ id }")]
+    [HttpPut("{id}")]
     [Authorize]
 
     public async Task<ActionResult<Step>> EditAsync(int id, [FromBody] Step stepData)

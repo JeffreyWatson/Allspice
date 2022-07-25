@@ -75,6 +75,23 @@ namespace Allspice.Repositories
       _db.Execute(sql, original);
     }
 
+    internal List<Recipe> GetFavoriteRecipes(string id)
+    {
+      string sql = @"
+        SELECT
+        r.*,
+        a.*
+        FROM recipes r
+        WHERE r.creatorId = @id
+        JOIN accounts a ON a.id = r.creatorId
+      ";
+      return _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
+      {
+        recipe.Creator = profile;
+        return recipe;
+      }).ToList();
+    }
+
     internal void Delete(int id)
     {
       string sql = "DELETE FROM recipes WHERE id = @id LIMIT 1";

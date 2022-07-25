@@ -55,5 +55,10 @@ namespace Allspice.Services
       _repo.Delete(id);
       return original;
     }
+
+    internal List<Recipe> GetFavoriteRecipes(string id)
+    {
+      return _repo.GetFavoriteRecipes(id);
+    }
   }
 }
