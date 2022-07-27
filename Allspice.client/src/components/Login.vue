@@ -1,7 +1,14 @@
 <template>
 	<span class="navbar-text">
 		<button
-			class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0"
+			class="
+				btn btn-dark
+				selectable
+				text-success
+				lighten-30
+				text-uppercase
+				me-5
+			"
 			@click="login"
 			v-if="!user.isAuthenticated"
 		>
@@ -10,7 +17,7 @@
 
 		<div class="dropdown my-2 my-lg-0" v-else>
 			<div
-				class="dropdown-toggle selectable"
+				class="card bg-dark dropdown-toggle selectable me-3"
 				data-bs-toggle="dropdown"
 				aria-expanded="false"
 				id="authDropdown"
@@ -20,9 +27,11 @@
 						:src="account.picture"
 						alt="account photo"
 						height="40"
-						class="rounded"
+						class="rounded-pill m-1"
 					/>
-					<span class="mx-3 text-success lighten-30">{{ account.name }}</span>
+					<span class="mx-3 text-white text-uppercase lighten-30"
+						><b> {{ account.name }}</b></span
+					>
 				</div>
 			</div>
 			<div

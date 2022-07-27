@@ -49,6 +49,11 @@ namespace Allspice.Services
       return original;
     }
 
+    internal List<RecipeFavoriteViewModel> GetFavoritesByAccountId(string userId)
+    {
+      return _repo.GetFavoritesByAccountId(userId);
+    }
+
     internal Recipe Delete(int id, string userId)
     {
       Recipe original = GetById(id);

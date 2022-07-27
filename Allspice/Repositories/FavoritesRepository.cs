@@ -13,14 +13,20 @@ namespace Allspice.Repositories
       _db = db;
     }
 
-    internal Favorite GetFavorite(Favorite favoriteData)
+    internal Favorite foundFavorite(Favorite favoriteData)
+    {
+      string sql = "SELECT * FROM favorites WHERE recipeId = @RecipeId AND accountId = @AccountId";
+      return _db.QueryFirstOrDefault<Favorite>(sql, favoriteData);
+    }
+
+    internal Favorite GetById(int id)
     {
       string sql = @"
       SELECT *
       FROM favorites
-      WHERE recipeId = @RecipeId AND accountId = @AccountId;
+      WHERE id = @id
       ";
-      return _db.QueryFirstOrDefault<Favorite>(sql, favoriteData);
+      return _db.QueryFirstOrDefault<Favorite>(sql, new { id });
     }
 
     internal Favorite Create(Favorite favoriteData)
@@ -37,14 +43,10 @@ namespace Allspice.Repositories
       return favoriteData;
     }
 
-    internal void Delete(Favorite original)
+    internal void Delete(int id)
     {
-      string sql = @"
-      DELETE
-      FROM favorites
-      WHERE id = @id LIMIT 1
-      ";
-      _db.Execute(sql, original);
+      string sql = "DELETE FROM favorites WHERE id = @id LIMIT 1";
+      _db.Execute(sql, new { id });
     }
   }
 }

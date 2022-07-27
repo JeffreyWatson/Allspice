@@ -61,6 +61,24 @@ namespace Allspice.Repositories
       return recipeData;
     }
 
+    internal List<RecipeFavoriteViewModel> GetFavoritesByAccountId(string userId)
+    {
+      string sql = @"
+      SELECT
+      a.*,
+      r.*,
+      f.id AS FavoriteId
+      FROM favorites f
+      JOIN recipes r ON r.id = f.recipeId
+      JOIN account a ON a.id = r.creatorId
+      WHERE f.accountId = @userId;";
+      return _db.Query<Account, RecipeFavoriteViewModel, RecipeFavoriteViewModel>(sql, (prof, recipe) =>
+      {
+        recipe.Creator = prof;
+        return recipe;
+      }, new { userId }).ToList();
+    }
+
     internal void Edit(Recipe original)
     {
       string sql = @"

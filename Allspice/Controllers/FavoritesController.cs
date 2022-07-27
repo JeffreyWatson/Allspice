@@ -21,7 +21,7 @@ namespace Allspice.Controllers
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<FavoriteController>> Create([FromBody] Favorite favoriteData)
+    public async Task<ActionResult<Favorite>> Create([FromBody] Favorite favoriteData)
     {
       try
       {
@@ -29,6 +29,36 @@ namespace Allspice.Controllers
         favoriteData.AccountId = userInfo.Id;
         Favorite newFavorite = _fs.Create(favoriteData);
         return Ok(newFavorite);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Favorite>> Delete(int id)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        _fs.Delete(id, userInfo.Id);
+        return Ok("Deleted");
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<Favorite> Get(int id)
+    {
+      try
+      {
+        Favorite favorite = _fs.GetById(id);
+        return Ok(favorite);
       }
       catch (Exception e)
       {

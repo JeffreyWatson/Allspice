@@ -13,31 +13,34 @@ namespace Allspice.Services
       _repo = repo;
     }
 
-    internal Favorite Create(Favorite favoriteData)
+    internal Favorite GetById(int id)
     {
-      Favorite found = this.GetFavorite(favoriteData);
-      if (found != null)
+      Favorite found = _repo.GetById(id);
+      if (found == null)
       {
-        int id = found.Id;
-        this.Delete(id);
-        return found;
+        throw new Exception("Invalid Id");
       }
-      _repo.Create(favoriteData);
-      return (favoriteData);
-    }
-
-    internal Favorite GetFavorite(Favorite favoriteData)
-    {
-      Favorite found = _repo.GetFavorite(favoriteData);
       return found;
     }
 
-    internal Favorite Delete(int id)
+    internal Favorite Create(Favorite favoriteData)
     {
-      Favorite original = new Favorite();
-      original.Id = id;
-      _repo.Delete(original);
-      throw new Exception("Un-Favorited.");
+      Favorite found = _repo.foundFavorite(favoriteData);
+      if (found != null)
+      {
+        return found;
+      }
+      return _repo.Create(favoriteData);
+    }
+
+    internal void Delete(int id, string userId)
+    {
+      Favorite toDelete = GetById(id);
+      if (toDelete.AccountId != userId)
+      {
+        throw new Exception("Invalid Action");
+      }
+      _repo.Delete(id);
     }
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Allspice.Models;
 using Allspice.Services;
@@ -13,10 +14,12 @@ namespace Allspice.Controllers
   public class AccountController : ControllerBase
   {
     private readonly AccountService _accountService;
+    private readonly RecipesService _rs;
 
-    public AccountController(AccountService accountService)
+    public AccountController(AccountService accountService, RecipesService rs)
     {
       _accountService = accountService;
+      _rs = rs;
     }
 
     [HttpGet]
@@ -34,6 +37,20 @@ namespace Allspice.Controllers
       }
     }
 
+    [HttpGet("favorites")]
+    public async Task<ActionResult<Account>> GetRecipeFavorites()
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        List<RecipeFavoriteViewModel> recipes = _rs.GetFavoritesByAccountId(userInfo.Id);
+        return Ok(recipes);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
 
   }

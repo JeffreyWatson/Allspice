@@ -1,15 +1,8 @@
 <template>
-	<header>
-		<Navbar />
-	</header>
-	<main>
+	<NewNav />
+	<main class="gx-0 bg-grey">
 		<router-view />
 	</main>
-	<footer>
-		<div class="bg-dark text-light text-center p-4">
-			Made with 💖 by CodeWorks
-		</div>
-	</footer>
 </template>
 
 <script>
@@ -19,7 +12,7 @@ export default {
 	name: 'App',
 	setup() {
 		return {
-			appState: computed(() => AppState)
+			appState: computed(() => AppState),
 		}
 	}
 }
